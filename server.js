@@ -10,6 +10,8 @@ const PORT = process.env.PORT || 2000
 //registering APP
 const app = express()
 
+app.use(express.static("public"))
+
 //requesting home page
 app.get("/", (req,res)=>{
     res.render('home')

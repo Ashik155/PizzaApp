@@ -1,0 +1,39 @@
+body {
+  font-family: "Libre Baskerville", serif;
+  -webkit-font-smoothing: antialiased;
+  color: #232323;
+}
+
+nav li:last-child a {
+  transition: all 0.3s ease-in-out;
+  background: #fa5246;
+}
+nav li:last-child a:hover {
+  background: #222831;
+}
+
+nav li a {
+  transition: all 0.3s ease-in-out;
+}
+nav li a:hover {
+  color: #fa5246;
+}
+
+section.hero {
+  background: #fde8cd;
+}
+
+.size {
+  background: #fde8cd;
+}
+
+.add-to-cart {
+  border: 2px solid #fa5246;
+  color: #fa5246;
+  transition: all 0.3s ease-in-out;
+}
+.add-to-cart:hover {
+  color: #fff;
+  background: #fa5246;
+  border-color: #fff;
+}

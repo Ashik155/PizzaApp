@@ -12,10 +12,7 @@ const app = express()
 
 app.use(express.static("public"))
 
-//requesting home page
-app.get("/", (req,res)=>{
-    res.render('home')
-})
+
 
 
 //registering templating Enginee...and setting up views ,...
@@ -23,7 +20,22 @@ app.use(expressLayouts)
 app.set('views', path.join(__dirname,"/resources/views"))
 app.set('view engine', 'ejs' )
 
+//requesting home page
+app.get("/", (req,res)=>{
+    res.render('home')
+})
 
+//orderSummaryPage;;
+app.get("/cart", (req,res)=>{
+    res.render("customers/cart")
+})
+
+app.get("/login", (req,res)=>{
+    res.render("auth/login")
+})
+app.get("/register", (req,res)=>{
+    res.render("auth/register")
+})
 
 //Running Server and serve http requests...
 app.listen(PORT, ()=>{

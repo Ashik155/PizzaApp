@@ -1,7 +1,24 @@
+require("dotenv").config()
 const express = require("express")
+const mongoose = require('mongoose')
 const ejs = require('ejs')
 const expressLayouts = require('express-ejs-layouts')
 const path = require('path')
+const connectDb = require("./app/config/db")
+const session = require("express-session")
+const flash = require('express-flash')
+const MongoStore = require('connect-mongo')(session)
+
+
+
+
+mongoose.connect("mongodb://127.0.0.1:27017/PizzaApp1", { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true });
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log('Database connected...');
+}).catch(err => {
+    console.log('Connection failed...')
+});
 
 
 //Defining Port Number ...
@@ -10,9 +27,25 @@ const PORT = process.env.PORT || 2000
 //registering APP
 const app = express()
 
+//serving Static Views and content ...
 app.use(express.static("public"))
+//jsonsetting 
+app.use(express.json())
 
 
+// Session store
+let mongoStore = new MongoStore({
+    mongooseConnection: connection,
+    collection: 'sessions'
+})
+//Session 
+app.use(session({
+    secret : "onething",
+    resave :false,
+    saveUninitialized :false,
+    store : mongoStore
+}))
+app.use(flash())
 
 
 //registering templating Enginee...and setting up views ,...
@@ -20,22 +53,23 @@ app.use(expressLayouts)
 app.set('views', path.join(__dirname,"/resources/views"))
 app.set('view engine', 'ejs' )
 
-//requesting home page
-app.get("/", (req,res)=>{
-    res.render('home')
-})
+//global Middleware
+app.use((req,res,next)=>{
+    if(req.session){
+        res.locals.session = req.session
+    console.log("req.session is ", req.session)
+    next()
 
-//orderSummaryPage;;
-app.get("/cart", (req,res)=>{
-    res.render("customers/cart")
+    }else{
+        console.log("no session available")
+        next()
+    }
+    
+    // console.log("SES From SErVE.js",req.session.cart)
+    
 })
+require("./routes/web")(app)
 
-app.get("/login", (req,res)=>{
-    res.render("auth/login")
-})
-app.get("/register", (req,res)=>{
-    res.render("auth/register")
-})
 
 //Running Server and serve http requests...
 app.listen(PORT, ()=>{

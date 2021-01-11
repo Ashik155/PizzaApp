@@ -12,7 +12,8 @@
           </a>
         </p> -->
       </div>
-      <form class="mt-8 space-y-6" action="#" method="POST">
+      <form action="/register" class="mt-8 space-y-6" action="#" method="POST">
+        <span class="text-red-500 font-bold"><%= (messages.error ? messages.error : '') %></span>
         <input type="hidden" name="remember" value="true">
         <div class="rounded-md shadow-sm -space-y-px">
             <div class="py-2">
